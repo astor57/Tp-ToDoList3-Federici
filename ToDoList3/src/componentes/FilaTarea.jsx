@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 
+// Cambiar {numero}, nombre y .completada porque sale de ningun lado
 
-function eliminarTarea(indice) {
-  //en el array tareas elimina 1 elemento a partir de x posición (indice en este caso)
-  tareas.splice(indice, 1);
-  muestraTareas();
-}
-function FilaTarea({ numero, nombre, completada }) {
+function FilaTarea( {tareas, setTareas} ) {
+  const eliminarTarea=(indice)=> {
+    const tareasRestantes= tareas.splice(indice, 1);
+    setTareas(tareasRestantes)
+  }
     return (
       <tr>
         <td>{numero}</td>
-        <td style={{ textDecoration: completada ? "line-through" : "none" }}>{nombre}</td>
+        <td style={{ textDecoration: tareas.completada ? "line-through" : "none" }}>{tareas.nombre}</td>
         <td>
           <input type="checkbox" checked={completada} readOnly />
         </td>
         <td>
-          <button className="btn btn-danger btn-sm" onClick={()=>eliminarTAREA(numero)}>X</button>{/*Hacer la funcion eliminarTAREA */}
+          <button className="btn btn-danger btn-sm" onClick={()=>eliminarTarea(numero)}>X</button>
         </td>
       </tr>
     );

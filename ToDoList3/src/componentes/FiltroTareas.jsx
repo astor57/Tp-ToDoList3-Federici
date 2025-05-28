@@ -1,5 +1,4 @@
 import React from 'react';
-import './FiltroTareas.css';
 
 function FiltroTareas({ filtroActual, setFiltro }) {
   const filtrar = (e) => {

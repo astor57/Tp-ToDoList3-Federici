@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './IngresoTarea.css';
 
 function IngresoTarea({ agregarTarea }) {
   const [tarea, setTarea] = useState('');
@@ -10,7 +9,7 @@ function IngresoTarea({ agregarTarea }) {
 
     const fecha = new Date().toLocaleString(); 
 
-    agregarTarea({ tarea });
+    agregarTarea({ tarea, fecha });
 
     setTarea('');
   };
