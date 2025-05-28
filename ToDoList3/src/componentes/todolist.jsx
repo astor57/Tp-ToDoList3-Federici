@@ -1,24 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import Encabezado from "./Encabezado";
-import Formulario from "./Formulario";
+import IngresoTarea from "./IngresoTarea";
 import FiltroTareas from "./FiltroTareas";
 import ListaTareas from "./ListaTareas";
 import TareaMasRapida from "./TareaMasRapida";
 import BotonEliminarCompletadas from "./BotonEliminarCompletadas";
-import './todo.css'
+import './todo.css';
 
+function TodoList() {
+  const [tareas, setTareas] = useState([]);
+  const [filtro, setFiltro] = useState("todas");
 
-function todolist() {
-    return (
-      <div className="container">
-        <Encabezado />
-        <Formulario />
-        <FiltroTareas />
-        <ListaTareas />
-        <TareaMasRapida />
-        <BotonEliminarCompletadas />
-      </div>
+  const agregarTarea = (nombre) => {
+    const nuevaTarea = {
+      id: Date.now(),
+      nombre,
+      fecha: new Date().toLocaleString(),
+      completada: false
+    };
+    setTareas([...tareas, nuevaTarea]);
+  };
+
+  const alternarTarea = (id) => {
+    const nuevasTareas = tareas.map((t) =>
+      t.id === id ? { ...t, completada: !t.completada } : t
     );
-  }
+    setTareas(nuevasTareas);
+  };
 
-  export default todolist;
+  const eliminarCompletadas = () => {
+    const incompletas = tareas.filter((t) => !t.completada);
+    setTareas(incompletas);
+  };
+
+  const tareasFiltradas = tareas.filter((t) => {
+    if (filtro === "todas") return true;
+    if (filtro === "completadas") return t.completada;
+    if (filtro === "pendientes") return !t.completada;
+    return true;
+  });
+
+  const tareaMasRapida = tareas.length
+    ? tareas.reduce((min, actual) =>
+        new Date(actual.fecha) < new Date(min.fecha) ? actual : min
+      )
+    : null;
+
+  return (
+    <div className="container">
+      <Encabezado />
+      <IngresoTarea agregarTarea={agregarTarea} />
+      <FiltroTareas filtroActual={filtro} setFiltro={setFiltro} />
+      <ListaTareas tareas={tareasFiltradas} alternarTarea={alternarTarea} />
+      <TareaMasRapida tarea={tareaMasRapida} />
+      <BotonEliminarCompletadas eliminarCompletadas={eliminarCompletadas} />
+    </div>
+  );
+}
+
+export default TodoList;

@@ -1,3 +1,11 @@
+import React, { useState } from "react";
+
+
+function eliminarTarea(indice) {
+  //en el array tareas elimina 1 elemento a partir de x posición (indice en este caso)
+  tareas.splice(indice, 1);
+  muestraTareas();
+}
 function FilaTarea({ numero, nombre, completada }) {
     return (
       <tr>
