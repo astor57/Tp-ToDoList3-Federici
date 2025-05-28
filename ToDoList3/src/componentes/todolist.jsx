@@ -5,6 +5,7 @@ import FiltroTareas from "./FiltroTareas";
 import ListaTareas from "./ListaTareas";
 import TareaMasRapida from "./TareaMasRapida";
 import BotonEliminarCompletadas from "./BotonEliminarCompletadas";
+import FilaTarea from "./FilaTarea";
 import './todo.css';
 
 function TodoList() {
@@ -50,6 +51,15 @@ function TodoList() {
     <div className="container">
       <Encabezado />
       <IngresoTarea agregarTarea={agregarTarea} />
+      {tareas.map((tarea, i) => (
+        <FilaTarea
+          key={i}
+          tarea={tarea}
+          indice={i}
+          setTareas={setTareas}
+        />
+      ))}
+
       <FiltroTareas filtroActual={filtro} setFiltro={setFiltro} />
       <ListaTareas tareas={tareasFiltradas} alternarTarea={alternarTarea} />
       <TareaMasRapida tarea={tareaMasRapida} />
