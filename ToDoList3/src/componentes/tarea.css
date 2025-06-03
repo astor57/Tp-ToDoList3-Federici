@@ -1,0 +1,24 @@
+.tarea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tarea.completada {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.tarea button {
+  background-color: #dc3545;
+  padding: 5px 10px;
+}
+
+.tarea button:hover {
+  background-color: #c82333;
+}

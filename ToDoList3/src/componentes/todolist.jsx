@@ -1,71 +1,57 @@
-import React, { useState } from "react";
-import Encabezado from "./Encabezado";
-import IngresoTarea from "./IngresoTarea";
-import FiltroTareas from "./FiltroTareas";
-import ListaTareas from "./ListaTareas";
-import TareaMasRapida from "./TareaMasRapida";
-import BotonEliminarCompletadas from "./BotonEliminarCompletadas";
-import FilaTarea from "./FilaTarea";
-import './todo.css';
+import { useState, useEffect } from 'react';
+import Formulario from './IngresoTarea';
+import ListaTareas from './ListaTareas';
+import Filtro from './FiltroTareas';
+import './todo.css'
 
-function TodoList() {
+const Todo = () => {
   const [tareas, setTareas] = useState([]);
-  const [filtro, setFiltro] = useState("todas");
+  const [inputValue, setInputValue] = useState('');
+  const [filtro, setFiltro] = useState('todas');
 
-  const agregarTarea = (nombre) => {
-    const nuevaTarea = {
-      id: Date.now(),
-      nombre,
-      fecha: new Date().toLocaleString(),
-      completada: false
-    };
-    setTareas([...tareas, nuevaTarea]);
-  };
+  useEffect(() => {
+    const storedTareas = JSON.parse(localStorage.getItem('tareas')) || [];
+    setTareas(storedTareas);
+  }, []);
 
-  const alternarTarea = (id) => {
-    const nuevasTareas = tareas.map((t) =>
-      t.id === id ? { ...t, completada: !t.completada } : t
-    );
+  useEffect(() => {
+    localStorage.setItem('tareas', JSON.stringify(tareas));
+  }, [tareas]);
+
+  const tareasFiltradas = tareas.filter(tarea => {
+    if (filtro === 'completadas') return tarea.completada;
+    if (filtro === 'incompletas') return !tarea.completada;
+    return true; 
+  });
+
+  const eliminarCompletadas = () => {
+    const nuevasTareas = tareas.filter(tarea => !tarea.completada);
     setTareas(nuevasTareas);
   };
 
-  const eliminarCompletadas = () => {
-    const incompletas = tareas.filter((t) => !t.completada);
-    setTareas(incompletas);
-  };
-
-  const tareasFiltradas = tareas.filter((t) => {
-    if (filtro === "todas") return true;
-    if (filtro === "completadas") return t.completada;
-    if (filtro === "pendientes") return !t.completada;
-    return true;
-  });
-
-  const tareaMasRapida = tareas.length
-    ? tareas.reduce((min, actual) =>
-        new Date(actual.fecha) < new Date(min.fecha) ? actual : min
-      )
-    : null;
-
   return (
     <div className="container">
-      <Encabezado />
-      <IngresoTarea agregarTarea={agregarTarea} />
-      {tareas.map((tarea, i) => (
-        <FilaTarea
-          key={i}
-          tarea={tarea}
-          indice={i}
-          setTareas={setTareas}
-        />
-      ))}
-
-      <FiltroTareas filtroActual={filtro} setFiltro={setFiltro} />
-      <ListaTareas tareas={tareasFiltradas} alternarTarea={alternarTarea} />
-      <TareaMasRapida tarea={tareaMasRapida} />
-      <BotonEliminarCompletadas eliminarCompletadas={eliminarCompletadas} />
+      <h1 className="mb-4">To-Do List</h1>
+      <Formulario 
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        onAgregar={() => {
+          if (inputValue.trim()) {
+            setTareas([...tareas, { texto: inputValue, completada: false }]);
+            setInputValue('');
+          }
+        }}
+      />
+      <Filtro filtro={filtro} setFiltro={setFiltro} />
+      <button 
+        onClick={eliminarCompletadas}
+        className="btn btn-danger mb-3"
+      >
+        Eliminar completadas
+      </button>
+      <ListaTareas tareas={tareasFiltradas} setTareas={setTareas} />
     </div>
   );
-}
+};
 
-export default TodoList;
+export default Todo;

@@ -1,33 +1,22 @@
-import React, { useState } from 'react';
-
-function IngresoTarea({ agregarTarea }) {
-  const [tarea, setTarea] = useState('');
-
-  const subirTarea = (e) => {
-    e.preventDefault();
-    if (tarea.trim() === '') return;
-
-    const fecha = new Date().toLocaleString(); 
-
-    agregarTarea({ tarea, fecha });
-
-    setTarea('');
-  };
-
+const Formulario = ({ inputValue, setInputValue, onAgregar }) => {
   return (
-    <div className="ingreso-tarea">
-      <h2>Agregar nueva tarea</h2>
-      <form onSubmit={subirTarea}>
-        <input
-          type="text"
-          placeholder="Nombre de la tarea"
-          value={tarea}
-          onChange={(e) => setTarea(e.target.value)}
-        />
-        <button type="submit">Agregar</button>
-      </form>
+    <div className="d-flex mb-4">
+      <input
+        type="text"
+        className="form-control me-2"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Nueva tarea"
+      />
+      <button 
+        onClick={onAgregar} 
+        className="btn btn-primary"
+      >
+        Agregar
+      </button>
     </div>
   );
-}
+};
 
-export default IngresoTarea;
+
+export default Formulario;

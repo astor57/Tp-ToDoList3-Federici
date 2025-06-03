@@ -1,20 +1,15 @@
-import React from 'react';
-
-function FiltroTareas({ filtroActual, setFiltro }) {
-  const filtrar = (e) => {
-    setFiltro(e.target.value);
-  };
-
+const FiltroTareas = ({ filtro, setFiltro }) => {
   return (
-    <div className="filtro-tareas">
-      <label htmlFor="filtro">Filtrar tareas:</label>
-      <select id="filtro" value={filtroActual} onChange={filtrar}>
-        <option value="todas">Todas</option>
-        <option value="completadas">Completadas</option>
-        <option value="pendientes">Pendientes</option>
-      </select>
-    </div>
+    <select 
+      value={filtro}
+      onChange={(e) => setFiltro(e.target.value)}
+      className="form-select mb-3"
+    >
+      <option value="todas">Todas</option>
+      <option value="completadas">Completadas</option>
+      <option value="incompletas">Incompletas</option>
+    </select>
   );
-}
+};
 
 export default FiltroTareas;
